@@ -1,21 +1,24 @@
 const { expect } = require("chai");
-const { ethers } = require("hardhat"); 
+const { ethers } = require("hardhat");
 
-describe("Token Contract: Kimlik", function () {
+describe("Token Contract: Arz ve Dağıtım", function () {
     let token;
+    let owner; 
+    const INITIAL_SUPPLY = 1000;
 
     beforeEach(async function () {
         const Token = await ethers.getContractFactory("Token");
-        
-        token = await Token.deploy();
+        [owner] = await ethers.getSigners();
+        token = await Token.deploy(INITIAL_SUPPLY);
         await token.waitForDeployment();
     });
 
-    it("İsim ve Sembol doğru olmalı", async function () {
-        const name = await token.name();
-        const symbol = await token.symbol();
+    it("Toplam arz belirlenen rakama eşit olmalı", async function () {
+        expect(await token.totalSupply()).to.equal(INITIAL_SUPPLY);
+    });
 
-        expect(name).to.equal("Mytoken");
-        expect(symbol).to.equal("MTK");
+    it("Tüm para (Arz) kontratı kuran kişinin (Owner) cüzdanında olmalı", async function () {
+        const ownerBalance = await token.balanceOf(owner.address);
+        expect(ownerBalance).to.equal(INITIAL_SUPPLY);
     });
 });
