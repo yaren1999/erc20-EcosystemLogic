@@ -30,4 +30,28 @@ contract Token {
         return true;
     }
 
+   
+    function approve(address spender, uint256 value) public returns (bool) {
+        allowance[msg.sender][spender] = value;
+        emit Approval(msg.sender, spender, value);
+        return true;
+    }
+
+    
+    function transferFrom(address from, address to, uint256 value) public returns (bool) {
+        // Yetki var mı kontrol et?
+        require(allowance[from][msg.sender] >= value, "Yetkiniz yok veya yetersiz!");
+        // Bakiyesi var mı kontrol et?
+        require(balanceOf[from] >= value, "Gonderenin bakiyesi yetersiz!");
+
+      
+        allowance[from][msg.sender] -= value;
+        // Parayı transfer et
+        balanceOf[from] -= value;
+        balanceOf[to] += value;
+
+        emit Transfer(from, to, value);
+        return true;
+    }
+
 }
