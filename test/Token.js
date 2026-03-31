@@ -21,4 +21,16 @@ describe("Token Contract: Arz ve Dağıtım", function () {
         const ownerBalance = await token.balanceOf(owner.address);
         expect(ownerBalance).to.equal(INITIAL_SUPPLY);
     });
+
+    it("Token transferi başarılı bir şekilde gerçekleşmeli", async function () {
+        const [owner, addr1] = await ethers.getSigners();
+        
+        await token.transfer(addr1.address, 100);
+      
+        const addr1Balance = await token.balanceOf(addr1.address);
+        expect(addr1Balance).to.equal(100);
+
+        const ownerBalance = await token.balanceOf(owner.address);
+        expect(ownerBalance).to.equal(900);
+    });
 });
