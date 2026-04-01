@@ -9,10 +9,7 @@ interface IToken {
 
 contract Staking {
     IToken public token;
-    
-  
     mapping(address => uint256) public stakedBalance;
-  
     mapping(address => uint256) public stakingTimestamp;
 
     constructor(address _tokenAddress) {
