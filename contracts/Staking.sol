@@ -25,4 +25,22 @@ contract Staking {
         stakedBalance[msg.sender] += amount;
         stakingTimestamp[msg.sender] = block.timestamp; 
     }
+
+    function calculateReward(address account) public view returns (uint256) {
+        if (stakedBalance[account] == 0) return 0;
+        
+        uint256 timePassed = block.timestamp - stakingTimestamp[account];
+        return (stakedBalance[account] * timePassed) / 100;
+    }
+
+    function withdraw() public {
+        uint256 amount = stakedBalance[msg.sender];
+        require(amount > 0, "Hic token kilitlememissiniz");
+        uint256 reward = calculateReward(msg.sender);
+        
+        stakedBalance[msg.sender] = 0;
+        stakingTimestamp[msg.sender] = 0;
+        token.transfer(msg.sender, amount);
+        token.transfer(msg.sender, reward);
+    }
 }
