@@ -7,7 +7,7 @@ describe("Staking: Para Kilitleme", function () {
     beforeEach(async function () {
         [owner, addr1] = await ethers.getSigners();
 
-        const Token = await ethers.getContractFactory("Token");
+        const Token = await ethers.getContractFactory("SecureToken");
         token = await Token.deploy(10000); 
 
         const Staking = await ethers.getContractFactory("Staking");
