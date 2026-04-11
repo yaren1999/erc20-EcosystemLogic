@@ -41,7 +41,7 @@ contract Token {
     function transferFrom(address from, address to, uint256 value) public returns (bool) {
         require(allowance[from][msg.sender] >= value, "Yetkiniz yok veya yetersiz!");
         require(balanceOf[from] >= value, "Gonderenin bakiyesi yetersiz!");
-        
+
         allowance[from][msg.sender] -= value;
         balanceOf[from] -= value;
         balanceOf[to] += value;
